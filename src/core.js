@@ -856,13 +856,15 @@ $.extend( $.validator, {
 					$.validator.messages[ rule.method ],
 					"<strong>Warning: No message defined for " + element.name + "</strong>"
 				),
-				theregex = /\$?\{(\d+)\}/g;
+				theregex = /\$?\{(\d+)\}/g,
+				regexValidation = /#{|}/g;
 			if ( typeof message === "function" ) {
 				message = message.call( this, rule.parameters, element );
 			} else if ( theregex.test( message ) ) {
 				message = $.validator.format( message.replace( theregex, "{$1}" ), rule.parameters );
+			} else if ( regexValidation.test( message ) ) {
+				message = $.validator.format( message.replace( regexValidation, "" ), rule.parameters );
 			}
-
 			return message;
 		},
 
